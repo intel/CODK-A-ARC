@@ -1,0 +1,3 @@
+#!/bin/sh
+dir=$(dirname $(readlink -f $0))
+xvfb-run -a $dir/arduino/arduino $@

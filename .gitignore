@@ -1,0 +1,4 @@
+# Leading slash matches the top level directory within repo
+/arduino
+/arduino-[0-9]*/
+/arduino-[0-9]*.tar.xz
