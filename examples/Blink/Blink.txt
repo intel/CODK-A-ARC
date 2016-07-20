@@ -1,1 +1,5 @@
-Turn an LED on and off. 
+This sketch turns an LED on and off. 
+
+To convert the sketch to a C++ file that can be compiled by CODK,
+run:
+    make convert-sketch SKETCH=Blink.ino

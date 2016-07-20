@@ -1,6 +1,9 @@
-IDEVER := 1.6.9
 ARDUINOSW_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-arduino-headless := $(ARDUINOSW_DIR)/arduino-headless
+TOOLCHAIN_URL := https://downloadmirror.intel.com/25470/eng/arc-toolchain-linux64-arcem-1.0.1.tar.bz2
+TOOLCHAIN     := $(notdir $(TOOLCHAIN_URL))
+CORELIBS_ZIP  := /tmp/corelibs.zip
+ARDUINO_URL   := https://github.com/arduino/Arduino/archive/1.6.9.zip
+ARDUINO_ZIP   := $(notdir $(ARDUINO_URL))
 
 help:
 	@echo "Install dependencies: sudo make install-dep"
@@ -13,27 +16,31 @@ check-root:
 
 install-dep: check-root
 	apt-get update
-	apt-get install -y xvfb xz-utils
+	apt-get install -y python
+	cp -f $(ARDUINOSW_DIR)/bin/99-dfu.rules /etc/udev/rules.d/99-dfu.rules
+	cp -f $(ARDUINOSW_DIR)/bin/99-ftdi.rules /etc/udev/rules.d/99-ftdi.rules
 
-setup:
+setup: arc32 setup-arduino-ide
+
+corelibs:
+	$(ARDUINOSW_DIR)/bin/parse_json.py; \
+	unzip $(CORELIBS_ZIP) ; \
+	mv corelibs* corelibs ;\
+	rm $(CORELIBS_ZIP)
+
+arc32:
+	@echo "Downloading ARC Toolchain"
+	cd /tmp; curl -OL $(TOOLCHAIN_URL)
+	@echo "Unpacking ARC Toolchain"
+	tar xf /tmp/$(TOOLCHAIN) -C $(ARDUINOSW_DIR)
+	rm /tmp/$(TOOLCHAIN)
+
+setup-arduino-ide:
+	rm -rf arduino-ide 2>/dev/null
 	@echo "Downloading Arduino IDE"
-	curl -OL http://downloads.arduino.cc/arduino-$(IDEVER)-linux64.tar.xz
+	cd /tmp; curl -OL $(ARDUINO_URL)
 	@echo "Unpacking Arduino IDE"
-	tar xf arduino-$(IDEVER)-linux64.tar.xz
-	ln -s arduino-$(IDEVER) arduino
-	./install-arduino101.sh
+	unzip /tmp/$(ARDUINO_ZIP) Arduino*/libraries/* -d $(ARDUINOSW_DIR)
+	mv Arduino-* arduino-ide
+	rm /tmp/$(ARDUINO_ZIP)
 
-compile:
-	@echo $(ARDUINOSW_DIR)
-	@echo $(arduino-headless)
-	$(arduino-headless) --verify $(sketch)
-
-upload:
-	$(arduino-headless) --upload $(sketch)
-
-clean:
-	rm -rf arduino-$(IDEVER)
-	rm arduino-$(IDEVER)-linux64.tar.xz
-	rm arduino
-
-.PHONY: help check-root install-dep setup compile upload clean

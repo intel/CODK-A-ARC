@@ -1,0 +1,5 @@
+The arduino101load program downloads An rduino sketch binary 
+to the Arduino101 board via using DFU-Util.
+
+The source for the program is here:
+https://github.com/01org/intel-arduino-tools/tree/windows/arduino101load
