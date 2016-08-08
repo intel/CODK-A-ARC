@@ -14,7 +14,6 @@ ARDUINOIDE_DIR = $(ARDUINOSW_DIR)/arduino-ide
 SERIAL_PORT ?= /dev/ttyACM0
 VERBOSE ?= false
 
-
 CORELIBS_DIR=$(CODK_DIR)/software/corelibs
 CORE_SRCS := $(shell find $(CORELIBS_DIR)/cores/arduino -name "*.c" 2>/dev/null) \
             $(shell find $(CORELIBS_DIR)/cores/arduino -name "*.cpp" 2>/dev/null) \
@@ -28,6 +27,9 @@ SRCS    := $(wildcard *.c) \
 
 OBJS1 := $(SRCS:.c=.o)
 OBJS  := $(OBJS1:.cpp=.o)
+
+INCL    += $(foreach dir,$(LIBDIRS), -I$(dir) )
+LIBSRCS += $(foreach dir,$(LIBDIRS), $(shell find $(dir) -maxdepth 1 -name "*.cpp" 2>/dev/null;) )
 
 LIBOBJS  := $(LIBSRCS:.cpp=.o)
 

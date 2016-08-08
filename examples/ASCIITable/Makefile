@@ -7,14 +7,9 @@ ARDUINOIDE_DIR ?= $(ARDUINOSW_DIR)/arduino-ide
 
 current_dir = $(shell pwd)
 
-OBJS     := $(SRCS:.cpp=.o)
-VERBOSE   = true
+VERBOSE  = true
 
-# Add custom library include paths and source folders
-INCL    += 
 LIBDIRS  =  
-
-LIBSRCS += $(foreach dir,$(LIBDIRS), $(shell find $(dir) -maxdepth 1 -name "*.cpp" 2>/dev/null;) )
 
 include $(ARDUINOSW_DIR)/Makefile.inc
 
