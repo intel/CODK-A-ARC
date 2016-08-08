@@ -57,12 +57,12 @@ CODK-A Software
   Using the included Blink.ino example sketch, the precedure for converting,
   building and uploading an existing sketch follows (ensure that your
   Arduino 101 board is connected to your PC, and that you know the serial
-  device name e.g. "/dev/ttyACM3"):
+  device name e.g. "/dev/ttyACM0"):
 
     $ cd $CODK_DIR/arduino101_software/examples/Blink
     $ make convert-sketch SKETCH=Blink.ino
     $ make compile
-    $ make upload SERIAL_PORT=/dev/ttyACM3
+    $ make upload SERIAL_PORT=/dev/ttyACM0
 
 
 CODK-A Firmware 
@@ -74,6 +74,6 @@ Build CODK-A Firmware
 
 Flash CODK-A Firmware
 
-    $ cd arduino101_flashpack
+    $ cd $CODK_DIR/arduino101_flashpack
     $ ./create_flasher.sh
     $ ./flash_dfu.sh
