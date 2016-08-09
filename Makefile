@@ -20,7 +20,7 @@ install-dep: check-root
 	cp -f $(ARDUINOSW_DIR)/bin/99-dfu.rules /etc/udev/rules.d/99-dfu.rules
 	cp -f $(ARDUINOSW_DIR)/bin/99-ftdi.rules /etc/udev/rules.d/99-ftdi.rules
 
-setup: arc32 setup-arduino-ide
+setup: arc32 arduino-ide corelibs
 
 corelibs:
 	$(ARDUINOSW_DIR)/bin/parse_json.py; \
@@ -35,8 +35,7 @@ arc32:
 	tar xf /tmp/$(TOOLCHAIN) -C $(ARDUINOSW_DIR)
 	rm /tmp/$(TOOLCHAIN)
 
-setup-arduino-ide:
-	rm -rf arduino-ide 2>/dev/null
+arduino-ide:
 	@echo "Downloading Arduino IDE"
 	cd /tmp; curl -OL $(ARDUINO_URL)
 	@echo "Unpacking Arduino IDE"
