@@ -15,7 +15,7 @@ SERIAL_PORT ?= /dev/ttyACM0
 VERBOSE ?= false
 
 
-CORELIBS_DIR=$(CODK_DIR)/arduino101_software/corelibs
+CORELIBS_DIR=$(CODK_DIR)/software/corelibs
 CORE_SRCS := $(shell find $(CORELIBS_DIR)/cores/arduino -name "*.c" 2>/dev/null) \
             $(shell find $(CORELIBS_DIR)/cores/arduino -name "*.cpp" 2>/dev/null) \
             $(shell find $(CORELIBS_DIR)/variants/arduino_101 -name "*.c" 2>/dev/null) \
@@ -59,7 +59,7 @@ EXTRA_CPPFLAGS=-D__CPU_ARC__ -DCLOCK_SPEED=32 -DCONFIG_SOC_GPIO_32 -DCONFIG_SOC_
 ELFFLAGS=-nostartfiles -nodefaultlibs -nostdlib -static -Wl,-X -Wl,-N -Wl,-mcpu=quarkse_em -Wl,-marcelf -Wl,--gc-sections
 ARFLAGS=rcs
 
-arduino=$CODK_DIR/arduino101_software/sketch-converter
+arduino=$CODK_DIR/software/sketch-converter
 LIB_DIR=$arduino/../libraries
 
 CORE_A = $(CORELIBS_DIR)/cores/arduino/core.a

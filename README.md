@@ -35,8 +35,8 @@ CODK-A first-time setup
     
   Set up CODK-A-Software
 
-    $ sudo make install-dep -C $CODK_DIR/arduino101_software
-    $ make setup -C $CODK_DIR/arduino101_software
+    $ sudo make install-dep -C $CODK_DIR/software
+    $ make setup -C $CODK_DIR/software
     
   Set up CODK-A Firmware
 
@@ -59,7 +59,7 @@ CODK-A Software
   Arduino 101 board is connected to your PC, and that you know the serial
   device name e.g. "/dev/ttyACM0"):
 
-    $ cd $CODK_DIR/arduino101_software/examples/Blink
+    $ cd $CODK_DIR/software/examples/Blink
     $ make convert-sketch SKETCH=Blink.ino
     $ make compile
     $ make upload SERIAL_PORT=/dev/ttyACM0
