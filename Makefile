@@ -6,10 +6,6 @@ ARDUINO_URL   := https://github.com/arduino/Arduino/archive/1.6.9.zip
 ARDUINO_ZIP   := $(notdir $(ARDUINO_URL))
 
 help:
-	@echo "Install dependencies: sudo make install-dep"
-	@echo "Set up the build env: make setup"
-	@echo "Compile only: make compile sketch=<file>.ino"
-	@echo "Compile and upload: make upload sketch=<file>.ino"
 
 check-root:
 	@if [ `whoami` != root ]; then echo "Please run as sudoer/root" ; exit 1 ; fi
