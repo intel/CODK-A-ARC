@@ -13,6 +13,6 @@ LIBDIRS  =
 
 include $(ARDUINOSW_DIR)/Makefile.inc
 
-all: upload
+all: compile
 
 .DEFAULT_GOAL := all
