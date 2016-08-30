@@ -1,4 +1,3 @@
-ARDUINOSW_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ARC32_DIR      = $(ARDUINOSW_DIR)/arc32
 CPP            = $(ARC32_DIR)/bin/arc-elf32-g++
 CC             = $(ARC32_DIR)/bin/arc-elf32-gcc
@@ -14,7 +13,7 @@ ARDUINOIDE_DIR = $(ARDUINOSW_DIR)/arduino-ide
 SERIAL_PORT ?= /dev/ttyACM0
 VERBOSE ?= false
 
-CORELIBS_DIR=$(CODK_DIR)/software/corelibs
+CORELIBS_DIR=$(ARDUINOSW_DIR)/corelibs
 CORE_SRCS := $(shell find $(CORELIBS_DIR)/cores/arduino -name "*.c" 2>/dev/null) \
             $(shell find $(CORELIBS_DIR)/cores/arduino -name "*.cpp" 2>/dev/null) \
             $(shell find $(CORELIBS_DIR)/variants/arduino_101 -name "*.c" 2>/dev/null) \
@@ -61,7 +60,7 @@ EXTRA_CPPFLAGS=-D__CPU_ARC__ -DCLOCK_SPEED=32 -DCONFIG_SOC_GPIO_32 -DCONFIG_SOC_
 ELFFLAGS=-nostartfiles -nodefaultlibs -nostdlib -static -Wl,-X -Wl,-N -Wl,-mcpu=quarkse_em -Wl,-marcelf -Wl,--gc-sections
 ARFLAGS=rcs
 
-arduino=$CODK_DIR/software/sketch-converter
+arduino=$(ARDUINOSW_DIR)/sketch-converter
 LIB_DIR=$arduino/../libraries
 
 CORE_A = $(CORELIBS_DIR)/cores/arduino/core.a
