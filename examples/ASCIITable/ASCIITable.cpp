@@ -67,12 +67,9 @@ void loop() {
   // also prints ending line break:
   Serial.println(thisByte, BIN);
 
-  // if printed last visible character '~' or 126, stop:
+  // if printed last visible character '~' or 126, restart from the beginning:
   if (thisByte == 126) {    // you could also use if (thisByte == '~') {
-    // This loop loops forever and does nothing
-    while (true) {
-      continue;
-    }
+    thisByte = 32;
   }
   // go on to the next character
   thisByte++;
