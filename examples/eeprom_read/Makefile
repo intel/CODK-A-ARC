@@ -2,7 +2,7 @@ ifeq ("$(strip $(CODK_DIR))", "")
   $(error Please set the CODK_DIR variable.)
 endif
 
-ARDUINOSW_DIR ?=$(CODK_DIR)/arduino101_software
+ARDUINOSW_DIR ?= $(CODK_DIR)/arc
 
 current_dir = $(shell pwd)
 
