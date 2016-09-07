@@ -15,6 +15,7 @@ install-dep: check-root
 	apt-get install -y python
 	cp -f $(ARDUINOSW_DIR)/bin/99-dfu.rules /etc/udev/rules.d/99-dfu.rules
 	cp -f $(ARDUINOSW_DIR)/bin/99-ftdi.rules /etc/udev/rules.d/99-ftdi.rules
+	service udev restart
 
 setup: arc32 arduino-ide corelibs
 
