@@ -28,7 +28,7 @@ OBJS1 := $(SRCS:.c=.o)
 OBJS  := $(OBJS1:.cpp=.o)
 
 INCL    += $(foreach dir,$(LIBDIRS), -I$(dir) )
-LIBSRCS += $(foreach dir,$(LIBDIRS), $(shell find $(dir) -maxdepth 1 -name "*.cpp" 2>/dev/null;) )
+LIBSRCS += $(foreach dir,$(LIBDIRS), $(shell find $(dir) -name "*.cpp" 2>/dev/null;) )
 
 LIBOBJS  := $(LIBSRCS:.cpp=.o)
 
