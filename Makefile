@@ -1,7 +1,8 @@
 ARDUINOSW_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 TOOLCHAIN_URL := https://downloadmirror.intel.com/25470/eng/arc-toolchain-linux64-arcem-1.0.1.tar.bz2
 TOOLCHAIN     := $(notdir $(TOOLCHAIN_URL))
-CORELIBS_ZIP  := /tmp/corelibs.zip
+CORELIBS_URL  ?= https://github.com/01org/corelibs-arduino101/archive/master.zip
+CORELIBS_ZIP  := $(notdir $(CORELIBS_URL))
 ARDUINO_URL   := https://github.com/arduino/Arduino/archive/1.6.9.zip
 ARDUINO_ZIP   := $(notdir $(ARDUINO_URL))
 
@@ -20,10 +21,13 @@ install-dep: check-root
 setup: arc32 arduino-ide corelibs
 
 corelibs:
-	$(ARDUINOSW_DIR)/bin/parse_json.py; \
-	unzip $(CORELIBS_ZIP) ; \
-	mv corelibs* corelibs ;\
-	rm $(CORELIBS_ZIP)
+	@echo "Downloading corelibs"
+	cd /tmp; curl -OL $(CORELIBS_URL)
+	@echo "Unpacking corelibs"
+	unzip /tmp/$(CORELIBS_ZIP) -d $(ARDUINOSW_DIR)
+	mv $(ARDUINOSW_DIR)/corelibs-* $(ARDUINOSW_DIR)/corelibs
+	rm /tmp/$(CORELIBS_ZIP)
+
 
 arc32:
 	@echo "Downloading ARC Toolchain"
