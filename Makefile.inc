@@ -28,9 +28,10 @@ OBJS1 := $(SRCS:.c=.o)
 OBJS  := $(OBJS1:.cpp=.o)
 
 INCL    += $(foreach dir,$(LIBDIRS), -I$(dir) )
-LIBSRCS += $(foreach dir,$(LIBDIRS), $(shell find $(dir) -name "*.cpp" 2>/dev/null;) )
+LIBSRCS += $(foreach dir,$(LIBDIRS), $(shell find $(dir) -name "*.cpp" -o -name "*.c" 2>/dev/null;) )
 
-LIBOBJS  := $(LIBSRCS:.cpp=.o)
+LIBOBJS1  := $(LIBSRCS:.c=.o)
+LIBOBJS  := $(LIBOBJS1:.cpp=.o)
 
 OUTNAME = arc
 
@@ -42,6 +43,7 @@ INCL += -I $(CORELIBS_DIR)/system/libarc32_arduino101/common \
 	-I $(CORELIBS_DIR)/cores/arduino \
 	-I $(CORELIBS_DIR)/libraries/Adafruit_NeoPixel \
 	-I $(CORELIBS_DIR)/libraries/CurieBLE/src \
+	-I $(CORELIBS_DIR)/libraries/CurieBLE/src/internal \
 	-I $(CORELIBS_DIR)/libraries/CurieEEPROM/src \
 	-I $(CORELIBS_DIR)/libraries/CurieI2S/src \
 	-I $(CORELIBS_DIR)/libraries/CurieIMU/src \
@@ -55,7 +57,7 @@ INCL += -I $(CORELIBS_DIR)/system/libarc32_arduino101/common \
 
 CFLAGS=-c -mcpu=quarkse_em -mlittle-endian -g -Os -Wall -fno-reorder-functions -fno-asynchronous-unwind-tables -fno-omit-frame-pointer -fno-defer-pop -Wno-unused-but-set-variable -Wno-main -ffreestanding -fno-stack-protector -mno-sdata -ffunction-sections -fdata-sections -fsigned-char -MMD -D__ARDUINO_ARC__
 CPPFLAGS=-c -mcpu=quarkse_em -mlittle-endian -g -Os -Wall -fno-reorder-functions -fno-asynchronous-unwind-tables -fno-omit-frame-pointer -fno-defer-pop -Wno-unused-but-set-variable -Wno-main -ffreestanding -fno-stack-protector -mno-sdata -ffunction-sections -fdata-sections -fsigned-char -MMD -fno-rtti -fno-exceptions -D__ARDUINO_ARC__ -std=c++11
-EXTRA_CPPFLAGS=-D__CPU_ARC__ -DCLOCK_SPEED=32 -DCONFIG_SOC_GPIO_32 -DCONFIG_SOC_GPIO_AON -DINFRA_MULTI_CPU_SUPPORT -DCFW_MULTI_CPU_SUPPORT -DHAS_SHARED_MEM "-I$(CORELIBS_DIR)/libarc32_arduino101/common" "-I$(CORELIBS_DIR)/libarc32_arduino101/drivers" "-I$(CORELIBS_DIR)/libarc32_arduino101/bootcode" "-I$(CORELIBS_DIR)/libarc32_arduino101/framework/include"
+EXTRA_CPPFLAGS=-D__CPU_ARC__ -DCLOCK_SPEED=32 -DCONFIG_SOC_GPIO_32 -DCONFIG_SOC_GPIO_AON -DINFRA_MULTI_CPU_SUPPORT -DCFW_MULTI_CPU_SUPPORT -DHAS_SHARED_MEM "-I$(CORELIBS_DIR)/libarc32_arduino101/common" "-I$(CORELIBS_DIR)/libarc32_arduino101/drivers" "-I$(CORELIBS_DIR)/libarc32_arduino101/bootcode" "-I$(CORELIBS_DIR)/libarc32_arduino101/framework/include" -DCONFIG_BLUETOOTH_PERIPHERAL -DCONFIG_BLUETOOTH_CENTRAL -DCONFIG_BLUETOOTH_GATT_CLIENT
 
 ELFFLAGS=-nostartfiles -nodefaultlibs -nostdlib -static -Wl,-X -Wl,-N -Wl,-mcpu=quarkse_em -Wl,-marcelf -Wl,--gc-sections
 ARFLAGS=rcs
