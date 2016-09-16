@@ -128,7 +128,7 @@ compile: $(OUTNAME).elf
 
 upload: compile
 	@echo Resetting port $(SERIAL_PORT)
-	$(ARDUINOSW_DIR)/bin/resetPort.py $(SERIAL_PORT)
+	stty -F $(SERIAL_PORT) 1200
 	sleep 1
 	@echo Uploading $< to port $(SERIAL_PORT)
 	$(ARDUINOSW_DIR)/bin/arduino101load $(ARDUINOSW_DIR)/bin/x86/bin $(OUTNAME).bin $(SERIAL_PORT) $(VERBOSE)
