@@ -34,15 +34,18 @@ Libraries are located at:
 
 The following Libraries are available:
 
-+ CurieBLE
-+ CurieEEPROM
-+ CurieIMU
-+ CurieMailbox
-+ CurieSMC
-+ CurieSoftwareSerial
-+ CurieTime
-+ SerialFLash
-+ Servo
++ CurieBLE  
++ CurieI2S  
++ CurieIMU      
++ CurieMailbox  
++ CurieSMC             
++ CurieSoftwareSerial  
++ CurieTime      
++ CurieTimerOne  
++ EEPROM                             
++ Intel-Pattern-Matching-Technology  
++ SerialFlash  
++ Servo        
 + SPI
 + Wire
 
