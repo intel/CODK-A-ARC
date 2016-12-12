@@ -158,6 +158,7 @@ convert-sketch:
 	-prefs=build.warn_data_percentage=75 \
 	"$(SKETCH)"  
 	cp $(current_dir)/tmp/sketch/$(SKETCH).cpp $(current_dir)
+	sed -i 's/^#line [0-9]*.*$$//g' $(current_dir)/$(SKETCH).cpp
 
 clean-all: clean
 	@echo Removing $(CORE_OBJS) $(CORE_A) $(CORELIBS_DIR)/cores/arduino/core.a
