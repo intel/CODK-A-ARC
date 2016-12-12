@@ -55,8 +55,8 @@ INCL += -I $(CORELIBS_DIR)/system/libarc32_arduino101/common \
 	-I $(CORELIBS_DIR)/libraries/SPI/src \
 	-I $(CORELIBS_DIR)/libraries/Wire/src \
 
-CFLAGS=-c -mcpu=quarkse_em -mlittle-endian -g -Os -Wall -fno-reorder-functions -fno-asynchronous-unwind-tables -fno-omit-frame-pointer -fno-defer-pop -Wno-unused-but-set-variable -Wno-main -ffreestanding -fno-stack-protector -mno-sdata -ffunction-sections -fdata-sections -fsigned-char -MMD -D__ARDUINO_ARC__
-CPPFLAGS=-c -mcpu=quarkse_em -mlittle-endian -g -Os -Wall -fno-reorder-functions -fno-asynchronous-unwind-tables -fno-omit-frame-pointer -fno-defer-pop -Wno-unused-but-set-variable -Wno-main -ffreestanding -fno-stack-protector -mno-sdata -ffunction-sections -fdata-sections -fsigned-char -MMD -fno-rtti -fno-exceptions -D__ARDUINO_ARC__ -std=c++11
+CFLAGS=-c -mcpu=quarkse_em -mlittle-endian -Wall -fno-reorder-functions -fno-asynchronous-unwind-tables -fno-omit-frame-pointer -fno-defer-pop -Wno-unused-but-set-variable -Wno-main -ffreestanding -fno-stack-protector -mno-sdata -ffunction-sections -fdata-sections -fsigned-char -MMD -D__ARDUINO_ARC__
+CPPFLAGS=-c -mcpu=quarkse_em -mlittle-endian -Wall -fno-reorder-functions -fno-asynchronous-unwind-tables -fno-omit-frame-pointer -fno-defer-pop -Wno-unused-but-set-variable -Wno-main -ffreestanding -fno-stack-protector -mno-sdata -ffunction-sections -fdata-sections -fsigned-char -MMD -fno-rtti -fno-exceptions -D__ARDUINO_ARC__ -std=c++11
 EXTRA_CPPFLAGS=-D__CPU_ARC__ -DCLOCK_SPEED=32 -DCONFIG_SOC_GPIO_32 -DCONFIG_SOC_GPIO_AON -DINFRA_MULTI_CPU_SUPPORT -DCFW_MULTI_CPU_SUPPORT -DHAS_SHARED_MEM "-I$(CORELIBS_DIR)/libarc32_arduino101/common" "-I$(CORELIBS_DIR)/libarc32_arduino101/drivers" "-I$(CORELIBS_DIR)/libarc32_arduino101/bootcode" "-I$(CORELIBS_DIR)/libarc32_arduino101/framework/include" -DCONFIG_BLUETOOTH_PERIPHERAL -DCONFIG_BLUETOOTH_CENTRAL -DCONFIG_BLUETOOTH_GATT_CLIENT
 
 ELFFLAGS=-nostartfiles -nodefaultlibs -nostdlib -static -Wl,-X -Wl,-N -Wl,-mcpu=quarkse_em -Wl,-marcelf -Wl,--gc-sections
@@ -119,18 +119,24 @@ $(OUTNAME).elf: $(OBJS) $(LIBOBJS) $(CORE_A)
 	"-Wl,-Map,$(OUTNAME).map" -o $@ "-L." "-L$(CORELIBS_DIR)/variants/arduino_101" \
 	-Wl,--whole-archive "-larc32drv_arduino101" -Wl,--no-whole-archive \
 	-Wl,--start-group "-larc32drv_arduino101" -lnsim -lc -lm -lgcc $^ 
-	cp $@ arc-debug.elf
 
-compile: $(OUTNAME).elf
-	$(OBJCOPY) -S -O binary -R .note -R .comment -R COMMON -R .eh_frame $< arc.bin
-	$(STRIP) $(OUTNAME).elf
-	$(OBJCOPY) -S -O ihex -R .note -R .comment -R COMMON -R .eh_frame  $< $(OUTNAME).hex
+do-compile: clean-all $(OUTNAME).elf
+	$(OBJCOPY) -S -O binary -R .note -R .comment -R COMMON -R .eh_frame $(OUTNAME).elf arc.bin
+	$(OBJCOPY) -S -O ihex -R .note -R .comment -R COMMON -R .eh_frame  $(OUTNAME).elf $(OUTNAME).hex
 
-upload: compile
+compile: CFLAGS+=-Os
+compile: CPPFLAGS+=-Os
+compile: do-compile
+
+compile-debug: CFLAGS+=-g
+compile-debug: CPPFLAGS+=-g
+compile-debug: do-compile
+
+upload:
 	@echo Resetting port $(SERIAL_PORT)
 	stty -F $(SERIAL_PORT) 1200
 	sleep 1
-	@echo Uploading $< to port $(SERIAL_PORT)
+	@echo Uploading $(OUTNAME).bin to port $(SERIAL_PORT)
 	$(ARDUINOSW_DIR)/bin/arduino101load $(ARDUINOSW_DIR)/bin/x86/bin $(OUTNAME).bin $(SERIAL_PORT) $(VERBOSE)
 
 check: $(CPPSRCS)
@@ -166,6 +172,6 @@ clean-all: clean
 clean:
 	@echo Removing objects
 	rm -f *.o $(OBJS) $(LIBOBJS) *.S *.elf *.bin *.hex *.d *.map\
-              arc-debug.elf $(SRCS:%.cpp=%.d) $(SRCS:%.cpp=%.s)
+              $(OUTNAME).elf $(SRCS:%.cpp=%.d) $(SRCS:%.cpp=%.s)
 
 .PRECIOUS: %.cpp
