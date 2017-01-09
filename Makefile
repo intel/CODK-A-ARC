@@ -27,7 +27,7 @@ corelibs:
 	unzip /tmp/$(CORELIBS_ZIP) -d $(ARDUINOSW_DIR)
 	mv $(ARDUINOSW_DIR)/corelibs-* $(ARDUINOSW_DIR)/corelibs
 	rm /tmp/$(CORELIBS_ZIP)
-
+	sed '/#recipe.hooks.objcopy.preobjcopy.1.pattern/s/^#//g' $(ARDUINOSW_DIR)/platform.txt
 
 arc32:
 	@echo "Downloading ARC Toolchain"
