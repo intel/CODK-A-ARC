@@ -1,10 +1,10 @@
-ARDUINOSW_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-TOOLCHAIN_URL := https://downloadmirror.intel.com/25470/eng/arc-toolchain-linux64-arcem-1.0.1.tar.bz2
-TOOLCHAIN     := $(notdir $(TOOLCHAIN_URL))
-CORELIBS_URL  ?= https://github.com/01org/corelibs-arduino101/archive/master.zip
-CORELIBS_ZIP  := $(notdir $(CORELIBS_URL))
-ARDUINO_URL   := https://github.com/arduino/Arduino/archive/1.6.9.zip
-ARDUINO_ZIP   := $(notdir $(ARDUINO_URL))
+ARDUINOSW_DIR  := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+TOOLCHAIN_URL  := https://downloadmirror.intel.com/25470/eng/arc-toolchain-linux64-arcem-1.0.1.tar.bz2
+TOOLCHAIN      := $(notdir $(TOOLCHAIN_URL))
+CORELIBS_URL   := https://github.com/01org/corelibs-arduino101/archive/master.zip
+CORELIBS_ZIP   := $(notdir $(CORELIBS_URL))
+ARDUINO_URL    := https://github.com/arduino/Arduino/archive/1.6.9.zip
+ARDUINO_ZIP    := $(notdir $(ARDUINO_URL))
 
 help:
 
@@ -44,3 +44,7 @@ arduino-ide:
 	mv Arduino-* arduino-ide
 	rm /tmp/$(ARDUINO_ZIP)
 
+install-grove:
+	@echo "Installing Grove Starter Kit Sketchbook"
+	git clone https://github.com/vraoresearch/Curie_ODK_Grove_sketchbook.git $(ARDUINOSW_DIR)/examples/grove
+	mv $(ARDUINOSW_DIR)examples/grove/libraries/*  $(ARDUINOSW_DIR)libraries/
