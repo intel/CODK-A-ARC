@@ -13,7 +13,7 @@ check-root:
 
 install-dep: check-root
 	apt-get update
-	apt-get install -y python
+	apt-get install -y curl python
 	cp -f $(ARDUINOSW_DIR)/bin/99-dfu.rules /etc/udev/rules.d/99-dfu.rules
 	cp -f $(ARDUINOSW_DIR)/bin/99-ftdi.rules /etc/udev/rules.d/99-ftdi.rules
 	cp -f $(ARDUINOSW_DIR)/bin/99-jlink.rules /etc/udev/rules.d/99-jlink.rules
