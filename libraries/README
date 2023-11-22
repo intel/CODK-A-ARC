@@ -1,1 +1,4 @@
 Place Arduino libraries for sketches in this folder.
+Make sure to include your library library in your application makefile as follows:
+
+`LIBDIR = $(ARDUINOSW_DIR)/libraries/<Your_Library>/src `
